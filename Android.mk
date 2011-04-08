@@ -6,7 +6,8 @@ include $(CLEAR_VARS)
 LOCAL_SRC_FILES := \
     stagefright_overlay_output.cpp \
     IntelHwRenderer.cpp \
-    WrsOMXPlugin.cpp
+    WrsOMXPlugin.cpp \
+    IntelColorConverter.cpp
 
 LOCAL_CFLAGS := $(PV_CFLAGS_MINUS_VISIBILITY)
 
@@ -16,7 +17,8 @@ LOCAL_CFLAGS := $(PV_CFLAGS_MINUS_VISIBILITY)
 LOCAL_C_INCLUDES:= \
 		$(TOP)/frameworks/base/include/media/stagefright/openmax \
         $(TARGET_OUT_HEADERS)/libva \
-        $(TARGET_OUT_HEADERS)/libwrs_omxil_intel_mrst_psb
+        $(TARGET_OUT_HEADERS)/libwrs_omxil_intel_mrst_psb \
+	$(TOP)/frameworks/base/include/media/stagefright \
 
 LOCAL_SHARED_LIBRARIES :=       \
         libbinder               \
@@ -27,7 +29,8 @@ LOCAL_SHARED_LIBRARIES :=       \
         libva                   \
         libva-android           \
         libva-tpi               \
-        libsurfaceflinger_client
+        libsurfaceflinger_client \
+	libstagefright_color_conversion
 
 LOCAL_MODULE := libstagefrighthw
 
