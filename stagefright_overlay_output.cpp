@@ -51,10 +51,6 @@ VideoRenderer *createRenderer(
         size_t decodedWidth, size_t decodedHeight) {
     using android::IntelHwRenderer;
 
-    static const int OMX_INTEL_COLOR_FormatRawVa = 0x7FA00E00;
-    if (OMX_INTEL_COLOR_FormatRawVa != colorFormat)
-        return NULL;
-
     IntelHwRenderer *renderer =
         new IntelHwRenderer(
                 surface, displayWidth, displayHeight,

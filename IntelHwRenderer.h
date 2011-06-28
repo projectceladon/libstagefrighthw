@@ -26,6 +26,24 @@
 #include <media/stagefright/VideoRenderer.h>
 #include <utils/RefBase.h>
 #include <OMX_Component.h>
+#include <OMX_IVCommon.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <va/va.h>
+
+#ifdef __cplusplus
+}
+#endif
+
+#include <va/va_android.h>
+#include <vabuffer.h>
+
+static const int OMX_INTEL_COLOR_FormatRawVa = 0x7FA00E00;
+static const int MAX_RENDER_SURFACE_COUNT = 3;
+typedef unsigned int Display;
 
 namespace android {
 
@@ -53,6 +71,20 @@ private:
     size_t mDecodedWidth, mDecodedHeight;
     OMX_COLOR_FORMATTYPE mColorFormat;
     status_t mInitCheck;
+
+    //for software decoder and hardware render case
+    Display *mDisplay;
+    VADisplay mVADisplay;
+
+    int mCurrentSurfaceIndex;
+    VASurfaceID mRTSurfaces[MAX_RENDER_SURFACE_COUNT];
+    VAImage mSurfaceImages[MAX_RENDER_SURFACE_COUNT];
+    void * mBufferPointers[MAX_RENDER_SURFACE_COUNT];
+
+    VAStatus InitSurfaceForRender();
+    VAStatus DeInitSurfaceForRender();
+    VAStatus convertBufferToSurface(const void *data, size_t size, OMX_COLOR_FORMATTYPE srcColorFormat,
+                             int surfaceIndex, OMX_COLOR_FORMATTYPE dstColorFormat);
 
     IntelHwRenderer(const IntelHwRenderer &);
     IntelHwRenderer &operator=(const IntelHwRenderer &);
