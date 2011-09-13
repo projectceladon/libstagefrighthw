@@ -56,7 +56,8 @@ public:
             const sp<ISurface> &surface,
             size_t displayWidth, size_t displayHeight,
             size_t decodedWidth, size_t decodedHeight,
-            OMX_COLOR_FORMATTYPE colorFormat);
+            OMX_COLOR_FORMATTYPE colorFormat,
+            int32_t  rotationDegrees);
 
     virtual ~IntelHwRenderer();
 
@@ -70,6 +71,8 @@ private:
     size_t mDisplayWidth, mDisplayHeight;
     size_t mDecodedWidth, mDecodedHeight;
     OMX_COLOR_FORMATTYPE mColorFormat;
+    int32_t  mRotationDegrees;
+    int32_t  mVARotateFirst;
     status_t mInitCheck;
 
     //for software decoder and hardware render case

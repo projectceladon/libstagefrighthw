@@ -43,6 +43,35 @@ using android::sp;
 using android::ISurface;
 using android::VideoRenderer;
 
+
+VideoRenderer *createRendererWithRotation(
+        const sp<ISurface> &surface,
+        const char *componentName,
+        OMX_COLOR_FORMATTYPE colorFormat,
+        size_t displayWidth, size_t displayHeight,
+        size_t decodedWidth, size_t decodedHeight,
+        int32_t  rotationDegrees) {
+    using android::IntelHwRenderer;
+
+    static const int OMX_INTEL_COLOR_FormatRawVa = 0x7FA00E00;
+    if (OMX_INTEL_COLOR_FormatRawVa != colorFormat)
+        return NULL;
+
+    IntelHwRenderer *renderer =
+        new IntelHwRenderer(
+                surface, displayWidth, displayHeight,
+                decodedWidth, decodedHeight,
+                colorFormat, rotationDegrees);
+
+    if (renderer->initCheck() != android::OK) {
+        delete renderer;
+        renderer = NULL;
+    }
+
+    return renderer;
+}
+
+
 VideoRenderer *createRenderer(
         const sp<ISurface> &surface,
         const char *componentName,
@@ -55,7 +84,7 @@ VideoRenderer *createRenderer(
         new IntelHwRenderer(
                 surface, displayWidth, displayHeight,
                 decodedWidth, decodedHeight,
-                colorFormat);
+                colorFormat, 0);
 
     if (renderer->initCheck() != android::OK) {
         delete renderer;

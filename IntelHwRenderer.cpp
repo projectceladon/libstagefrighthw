@@ -40,19 +40,24 @@ IntelHwRenderer::IntelHwRenderer(
     const sp<ISurface> &surface,
     size_t displayWidth, size_t displayHeight,
     size_t decodedWidth, size_t decodedHeight,
-    OMX_COLOR_FORMATTYPE colorFormat)
+    OMX_COLOR_FORMATTYPE colorFormat,
+    int32_t  rotationDegrees)
     :mISurface(surface)
     ,mDisplayWidth(displayWidth)
     ,mDisplayHeight(displayHeight)
     ,mDecodedWidth(decodedWidth)
     ,mDecodedHeight(decodedHeight)
     ,mColorFormat(colorFormat)
+    ,mRotationDegrees(rotationDegrees)
+    ,mVARotateFirst(1)
     ,mInitCheck(OK) {
 
     g_framecount = 0;
     g_start = 0;
     g_end = 0;
 
+    LOGD("---- Constructor with mRotationDegrees = %d----\n", rotationDegrees);
+    
     if (colorFormat == OMX_COLOR_FormatYUV420Planar){
         LOGV("use hardware render for frame from software decoder!");
         VAStatus va_status = InitSurfaceForRender();
@@ -229,24 +234,36 @@ void IntelHwRenderer::render(const void *data,
                                 mCurrentSurfaceIndex, OMX_COLOR_FormatYUV420SemiPlanar);
     }
 
-    LOGV("In IntelHwRenderer vadisplay = %x surfaceid = %x aDataLen = %d\n", 
-                        mVADisplay, mSurfaceForRender, size);
     va_status = vaSyncSurface(mVADisplay, mSurfaceForRender);
-    LOGV("In IntelHwRenderer vaSyncSurface() returns = %x\n", va_status);
+
+    if (mVARotateFirst) {
+        VADisplayAttribute rotate;
+
+        rotate.type = VADisplayAttribRotation;
+        if (mRotationDegrees == 0)
+            rotate.value = VA_ROTATION_NONE;
+        else if (mRotationDegrees == 90)
+            rotate.value = VA_ROTATION_90;
+        else if (mRotationDegrees == 180)
+            rotate.value = VA_ROTATION_180;
+        else if (mRotationDegrees == 270)
+            rotate.value = VA_ROTATION_270;
+
+        LOGD("Set VA rotation to %d\n", mRotationDegrees);
+        va_status = vaSetDisplayAttributes(mVADisplay, &rotate, 1);
+        mVARotateFirst = 0;
+    }
 
     va_status = vaPutSurface(mVADisplay, mSurfaceForRender,
                         mISurface, 0, 0, mDecodedWidth, mDecodedHeight,
                         0, 0, mDisplayWidth, mDisplayHeight,
                         NULL, 0, 0);
-
-    LOGV("In IntelHwRenderer vaPutSurface() returns = %x\n", va_status);
     {
         struct timeval tv;
         gettimeofday(&tv, NULL);
         g_end = tv.tv_sec * 1000 + tv.tv_usec / 1000;
         //LOGV("vaPutSurface() g_end = %lu\n", g_end);
     }
-
 }
 
 }  // namespace android
