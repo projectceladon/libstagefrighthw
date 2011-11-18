@@ -4,10 +4,8 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := \
-    stagefright_overlay_output.cpp \
-    IntelHwRenderer.cpp \
-    WrsOMXPlugin.cpp \
-    IntelColorConverter.cpp
+    WrsOMXPlugin.cpp
+
 
 LOCAL_CFLAGS := $(PV_CFLAGS_MINUS_VISIBILITY)
 
@@ -29,8 +27,7 @@ LOCAL_SHARED_LIBRARIES :=       \
         libva                   \
         libva-android           \
         libva-tpi               \
-        libsurfaceflinger_client \
-	libstagefright_color_conversion
+        libsurfaceflinger_client
 
 LOCAL_MODULE := libstagefrighthw
 
