@@ -140,7 +140,7 @@ OMX_ERRORTYPE WrsOMXPlugin::getRolesOfComponent(
             array[i] = new OMX_U8[OMX_MAX_STRINGNAME_SIZE];
         }
 
-        OMX_U32 numRoles2;
+        OMX_U32 numRoles2 = numRoles;
         err = (*mGetRolesOfComponentHandle)(
                 const_cast<OMX_STRING>(name), &numRoles2, array);
 
