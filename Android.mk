@@ -13,7 +13,8 @@ LOCAL_CFLAGS := $(PV_CFLAGS_MINUS_VISIBILITY)
 #LOCAL_CFLAGS += -DLOG_NDEBUG=0
 
 LOCAL_C_INCLUDES:= \
-        $(TOP)/frameworks/base/include/media/stagefright/openmax \
+        $(TOP)/frameworks/native/include/media/hardware \
+        $(TOP)/frameworks/native/include/media/openmax
 
 LOCAL_SHARED_LIBRARIES :=       \
         libbinder               \
@@ -21,7 +22,7 @@ LOCAL_SHARED_LIBRARIES :=       \
         libcutils               \
         libui                   \
         libdl                   \
-        libsurfaceflinger_client
+        libstagefright_foundation
 
 LOCAL_MODULE := libstagefrighthw
 
