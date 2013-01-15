@@ -68,8 +68,9 @@ WrsOMXPlugin::WrsOMXPlugin()
         mGetRolesOfComponentHandle =
             (GetRolesOfComponentFunc)dlsym(
                     mLibHandle, "OMX_GetRolesOfComponent");
-
-        (*mInit)();
+        if (mInit != NULL) {
+            (*mInit)();
+        }
     }
 }
 
