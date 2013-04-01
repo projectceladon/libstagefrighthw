@@ -40,8 +40,41 @@
 #define WRS_OMX_PLUGIN_H_
 
 #include <OMXPluginBase.h>
+#include <utils/Mutex.h>
+#include <utils/Vector.h>
 
 namespace android {
+
+struct WrsOMXCore {
+    typedef OMX_ERRORTYPE (*InitFunc)();
+    typedef OMX_ERRORTYPE (*DeinitFunc)();
+    typedef OMX_ERRORTYPE (*ComponentNameEnumFunc)(
+            OMX_STRING, OMX_U32, OMX_U32);
+
+    typedef OMX_ERRORTYPE (*GetHandleFunc)(
+            OMX_HANDLETYPE *, OMX_STRING, OMX_PTR, OMX_CALLBACKTYPE *);
+
+    typedef OMX_ERRORTYPE (*FreeHandleFunc)(OMX_HANDLETYPE *);
+
+    typedef OMX_ERRORTYPE (*GetRolesOfComponentFunc)(
+            OMX_STRING, OMX_U32 *, OMX_U8 **);
+
+    void *mLibHandle;
+
+    InitFunc mInit;
+    DeinitFunc mDeinit;
+    ComponentNameEnumFunc mComponentNameEnum;
+    GetHandleFunc mGetHandle;
+    FreeHandleFunc mFreeHandle;
+    GetRolesOfComponentFunc mGetRolesOfComponentHandle;
+
+    OMX_U32 mNumComponents;
+};
+
+struct WrsOMXComponent {
+    OMX_COMPONENTTYPE *mComponent;
+    WrsOMXCore *mCore;
+};
 
 struct WrsOMXPlugin : public OMXPluginBase {
     WrsOMXPlugin();
@@ -66,27 +99,13 @@ struct WrsOMXPlugin : public OMXPluginBase {
             Vector<String8> *roles);
 
 private:
-    void *mLibHandle;
 
-    typedef OMX_ERRORTYPE (*InitFunc)();
-    typedef OMX_ERRORTYPE (*DeinitFunc)();
-    typedef OMX_ERRORTYPE (*ComponentNameEnumFunc)(
-            OMX_STRING, OMX_U32, OMX_U32);
+    Mutex mMutex; // to protect access to mComponents
 
-    typedef OMX_ERRORTYPE (*GetHandleFunc)(
-            OMX_HANDLETYPE *, OMX_STRING, OMX_PTR, OMX_CALLBACKTYPE *);
+    Vector<WrsOMXCore*> mCores;
+    Vector<WrsOMXComponent> mComponents;
 
-    typedef OMX_ERRORTYPE (*FreeHandleFunc)(OMX_HANDLETYPE *);
-
-    typedef OMX_ERRORTYPE (*GetRolesOfComponentFunc)(
-            OMX_STRING, OMX_U32 *, OMX_U8 **);
-
-    InitFunc mInit;
-    DeinitFunc mDeinit;
-    ComponentNameEnumFunc mComponentNameEnum;
-    GetHandleFunc mGetHandle;
-    FreeHandleFunc mFreeHandle;
-    GetRolesOfComponentFunc mGetRolesOfComponentHandle;
+    OMX_ERRORTYPE AddCore(const char* coreName);
 
     WrsOMXPlugin(const WrsOMXPlugin &);
     WrsOMXPlugin &operator=(const WrsOMXPlugin &);
