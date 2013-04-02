@@ -12,6 +12,10 @@ LOCAL_CFLAGS := $(PV_CFLAGS_MINUS_VISIBILITY)
 #enable log
 #LOCAL_CFLAGS += -DLOG_NDEBUG=0
 
+ifeq ($(USE_MEDIASDK),true)
+    LOCAL_CFLAGS += -DUSE_MEDIASDK
+endif
+
 LOCAL_C_INCLUDES:= \
         $(TOP)/frameworks/native/include/media/hardware \
         $(TOP)/frameworks/native/include/media/openmax

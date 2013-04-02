@@ -50,6 +50,9 @@ OMXPluginBase *createOMXPlugin() {
 WrsOMXPlugin::WrsOMXPlugin()
 {
    AddCore("libwrs_omxil_core_pvwrapped.so");
+#if defined(USE_MEDIASDK)
+   AddCore("libmfx_omx_core.so");
+#endif
 }
 
 OMX_ERRORTYPE WrsOMXPlugin::AddCore(const char* coreName)
