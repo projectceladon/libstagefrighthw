@@ -17,8 +17,8 @@ ifeq ($(USE_MEDIASDK),true)
 endif
 
 LOCAL_C_INCLUDES:= \
-        $(TOP)/frameworks/native/include/media/hardware \
-        $(TOP)/frameworks/native/include/media/openmax
+        $(call include-path-for, frameworks-native)/media/hardware \
+        $(call include-path-for, frameworks-native)/media/openmax
 
 LOCAL_SHARED_LIBRARIES :=       \
         libbinder               \
