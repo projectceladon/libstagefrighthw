@@ -29,7 +29,11 @@ LOCAL_SHARED_LIBRARIES :=       \
         libstagefright_foundation
 
 LOCAL_MODULE := libstagefrighthw
+LOCAL_MODULE_OWNER := intel_obl
 
 include $(BUILD_SHARED_LIBRARY)
+
+PREBUILT_PROJECT := libstagefrighthw
+include $(BUILD_PREBUILT_BUNDLE_CREATE)
 endif
 
