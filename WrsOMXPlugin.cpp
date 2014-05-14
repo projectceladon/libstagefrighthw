@@ -53,6 +53,9 @@ WrsOMXPlugin::WrsOMXPlugin()
 #if defined(USE_MEDIASDK)
    AddCore("libmfx_omx_core.so");
 #endif
+#if defined(USE_INTEL_MDP)
+   AddCore("libmdp_omx_core.so");
+#endif
 }
 
 OMX_ERRORTYPE WrsOMXPlugin::AddCore(const char* coreName)

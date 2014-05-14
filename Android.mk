@@ -16,6 +16,10 @@ ifeq ($(USE_MEDIASDK),true)
     LOCAL_CFLAGS += -DUSE_MEDIASDK
 endif
 
+ifeq ($(USE_INTEL_MDP),true)
+    LOCAL_CFLAGS += -DUSE_INTEL_MDP
+endif
+
 LOCAL_C_INCLUDES:= \
         $(call include-path-for, frameworks-native)/media/hardware \
         $(call include-path-for, frameworks-native)/media/openmax
