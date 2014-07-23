@@ -33,7 +33,7 @@ LOCAL_SHARED_LIBRARIES :=       \
         libstagefright_foundation
 
 LOCAL_MODULE := libstagefrighthw
-LOCAL_MODULE_OWNER := intel_obl
+LOCAL_MODULE_OWNER := intel
 
 include $(BUILD_SHARED_LIBRARY)
 
