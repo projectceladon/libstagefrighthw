@@ -20,6 +20,10 @@ ifeq ($(USE_INTEL_MDP),true)
     LOCAL_CFLAGS += -DUSE_INTEL_MDP
 endif
 
+ifeq ($(TARGET_HAS_ISV), true)
+	LOCAL_CFLAGS +=-DTARGET_HAS_ISV
+endif
+
 LOCAL_C_INCLUDES:= \
         $(call include-path-for, frameworks-native)/media/hardware \
         $(call include-path-for, frameworks-native)/media/openmax
