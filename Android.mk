@@ -1,3 +1,5 @@
+
+ifeq ($(INTEL_STAGEFRIGHT),true)
 ifeq ($(BUILD_WITH_FULL_STAGEFRIGHT),true)
 
 LOCAL_PATH := $(call my-dir)
@@ -43,5 +45,6 @@ include $(BUILD_SHARED_LIBRARY)
 
 PREBUILT_PROJECT := libstagefrighthw
 include $(BUILD_PREBUILT_BUNDLE_CREATE)
+endif
 endif
 
