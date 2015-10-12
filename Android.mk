@@ -1,6 +1,5 @@
 
 ifeq ($(INTEL_STAGEFRIGHT),true)
-ifeq ($(BUILD_WITH_FULL_STAGEFRIGHT),true)
 
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
@@ -26,6 +25,10 @@ ifeq ($(TARGET_HAS_ISV), true)
 	LOCAL_CFLAGS +=-DTARGET_HAS_ISV
 endif
 
+ifeq ($(PRODUCT_FEAT_VPU_G1V6_H1V6),true)
+    LOCAL_CFLAGS += -DUSE_VPU_G1V6_H1V6
+endif
+
 LOCAL_C_INCLUDES:= \
         $(call include-path-for, frameworks-native)/media/hardware \
         $(call include-path-for, frameworks-native)/media/openmax
@@ -45,6 +48,5 @@ include $(BUILD_SHARED_LIBRARY)
 
 PREBUILT_PROJECT := libstagefrighthw
 include $(BUILD_PREBUILT_BUNDLE_CREATE)
-endif
 endif
 
