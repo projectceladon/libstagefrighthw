@@ -49,6 +49,9 @@ OMXPluginBase *createOMXPlugin() {
 
 WrsOMXPlugin::WrsOMXPlugin()
 {
+#if defined(USE_VPU_G1V6_H1V6)
+   AddCore("libhantro_omx_core.so");
+#endif
 #ifdef TARGET_HAS_ISV
    AddCore("libisv_omx_core.so");
 #else
