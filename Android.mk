@@ -25,9 +25,13 @@ ifeq ($(TARGET_HAS_ISV), true)
 	LOCAL_CFLAGS +=-DTARGET_HAS_ISV
 endif
 
-ifeq ($(PRODUCT_FEAT_VPU_G1V6_H1V6),true)
-    LOCAL_CFLAGS += -DUSE_VPU_G1V6_H1V6
+ifeq ($(PRODUCT_FEAT_VPU_VERISILICON),true)
+    LOCAL_CFLAGS += -DUSE_HANTRO_OMX_CORE
 endif
+ifeq ($(PRODUCT_FEAT_VPU_ALLEGRO),true)
+    LOCAL_CFLAGS += -DUSE_ALLEGRO_OMX_CORE
+endif
+
 
 LOCAL_C_INCLUDES:= \
         $(call include-path-for, frameworks-native)/media/hardware \
