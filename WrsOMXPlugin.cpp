@@ -53,7 +53,7 @@ WrsOMXPlugin::WrsOMXPlugin()
    AddCore("libhantro_omx_core.so");
 #endif
 #if defined(USE_ALLEGRO_OMX_CORE)
-   AddCore("liballegro_omxil_core.so");
+   AddCore("libOMX.allegro.core.so");
 #endif
 #ifdef TARGET_HAS_ISV
    AddCore("libisv_omx_core.so");
