@@ -58,10 +58,7 @@ WrsOMXPlugin::WrsOMXPlugin()
 #ifdef TARGET_HAS_ISV
    AddCore("libisv_omx_core.so");
 #else
-   AddCore("libwrs_omxil_core_pvwrapped.so");
-#if defined(USE_MEDIASDK)
    AddCore("libmfx_omx_core.so");
-#endif
 #endif
 
 #if defined(USE_INTEL_MDP)
