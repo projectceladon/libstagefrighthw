@@ -45,7 +45,9 @@ LOCAL_SHARED_LIBRARIES :=       \
 LOCAL_MODULE := libstagefrighthw
 LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE_OWNER := intel
-
+ifeq ($(shell test $(PLATFORM_SDK_VERSION) -ge 27; echo $$?), 0)
+LOCAL_HEADER_LIBRARIES += media_plugin_headers
+endif
 include $(BUILD_SHARED_LIBRARY)
 
 PREBUILT_PROJECT := libstagefrighthw
