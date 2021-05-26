@@ -37,7 +37,7 @@
 #include "WrsOMXPlugin.h"
 
 #include <dlfcn.h>
-#include <cutils/properties.h>
+
 #include <HardwareAPI.h>
 #include <media/stagefright/foundation/ADebug.h>
 
@@ -69,15 +69,6 @@ WrsOMXPlugin::WrsOMXPlugin()
 OMX_ERRORTYPE WrsOMXPlugin::AddCore(const char* coreName)
 {
    void* libHandle = dlopen(coreName, RTLD_NOW);
-
-   char szVendorIntelVideoCodec[PROPERTY_VALUE_MAX] = {'\0'};
-
-   if(property_get("vendor.intel.video.codec", szVendorIntelVideoCodec, NULL) > 0 ) {
-       if (strncmp(szVendorIntelVideoCodec, "software", PROPERTY_VALUE_MAX) == 0 ) {
-           ALOGI("OMX IL core Property vendor.intel.video.codec is %s and will not load hardware codec plugin", szVendorIntelVideoCodec);
-           return OMX_ErrorNone;
-       }
-   }
 
    if (libHandle != NULL) {
         WrsOMXCore* core = (WrsOMXCore*)calloc(1,sizeof(WrsOMXCore));
